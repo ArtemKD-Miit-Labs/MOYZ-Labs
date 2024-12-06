@@ -47,21 +47,50 @@ int main()
 	__asm {
 		PUSHAD
 
+		LEA EDI, Memo
+
+		xor ECX, ECX
+
 		// 1)-1
 		MOV EAX, c
 		MUL b
-		MOV num1, EAX
+		MOV DWord Ptr [EDI + ECX * 4], EAX
+		INC ECX
+		MOV DWord Ptr [EDI + ECX * 4], EDX
+		INC ECX
 
 		// 1)-2
 		MOV EAX, a
+		xor EDX, EDX
 		MOV EBX, 4
 		DIV EBX
-		MOV num2, EAX
+		MOV DWord Ptr [EDI + ECX * 4], EAX
+		INC ECX
+		MOV DWord Ptr [EDI + ECX * 4], EDX
+		INC ECX
 
 		// 1)-3
+		// младшая часть b
 		MOV EAX, b
-		ADD EAX, num1
-		MOV num3, EAX
+		// старшая чать b
+		MOV EDX, 0
+		// младшая часть пунтка 1)-1
+		MOV ESI, DWord Ptr [EDI]
+		// старшая часть пункта 1)-1
+		MOV EBX, DWord Ptr [EDI + 4]
+
+		ADD EAX, ESI
+		ADC EDX, EBX		
+
+		// 1)-4
+		MOV ESI, DWord Ptr [EDI + 8]
+		MOV EBX, 0
+
+		SUB EAX, ESI
+		SBB EDX, EBX
+
+		MOV DWord Ptr [EDI], EAX
+		MOV DWord Ptr [EDI + 4], EDX
 
 		POPAD
 	}
