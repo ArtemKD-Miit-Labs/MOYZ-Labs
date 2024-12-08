@@ -33,12 +33,6 @@ int main()
 	int32_t e = 9012345; // 0x898479
 	int32_t f = 10123456; // 0x9A78C0
 
-	int32_t num1;
-	int32_t num2;
-	int32_t num3;
-
-	int32_t temp_num;
-
 	unsigned char Memo[DataSize];
 	for (int i = 0; i++; i < DataSize) {
 		Memo[i] = NULL;
@@ -47,21 +41,57 @@ int main()
 	__asm {
 		PUSHAD
 
+		LEA EDI, Memo // Храним в регистре EDI адресс первого байта Memo
+
 		// 1)-1
 		MOV EAX, c
 		MUL b
-		MOV num1, EAX
+		MOV DWord Ptr [EDI], EAX // заносим в Memo младшую часть произведения
+		MOV DWord Ptr [EDI + 4], EDX // заносим в Memo старшую часть произведения
 
 		// 1)-2
 		MOV EAX, a
+		xor EDX, EDX
 		MOV EBX, 4
 		DIV EBX
-		MOV num2, EAX
+		MOV DWord Ptr [EDI + 8], EAX
 
 		// 1)-3
-		MOV EAX, b
-		ADD EAX, num1
-		MOV num3, EAX
+		MOV EAX, b // младшая часть b
+		MOV EDX, 0 // старшая чать b
+		MOV ECX, DWord Ptr [EDI] // младшая часть пунтка 1)-1
+		MOV EBX, DWord Ptr [EDI + 4] // старшая часть пункта 1)-1
+
+		ADD EAX, ECX
+		ADC EDX, EBX		
+
+		// 1)-4
+		MOV ECX, DWord Ptr [EDI + 8] // младшая часть пунтка 1)-2
+		MOV EBX, 0 // старшая часть пунтка 1)-2
+
+		SUB EAX, ECX
+		SBB EDX, EBX
+
+		MOV DWord Ptr [EDI], EAX
+		MOV DWord Ptr [EDI + 4], EDX
+
+		// 2)-1
+		MOV EAX, a
+		MUL b // младшая часть EAX, старшая EDX
+
+		// 2)-2
+		SUB EAX, 1
+		SBB EDX, 0
+
+		MOV EBX, EAX
+		MOV ECX, EDX
+
+		// 3)
+		MOV EAX, DWord Ptr [EDI]
+		MOV EDX, DWord Ptr [EDI + 4]
+
+		DIV EBX
+		MOV DWord Ptr [EDI], EAX
 
 		POPAD
 	}
