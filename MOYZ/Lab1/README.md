@@ -54,7 +54,8 @@ int main()
 		MOV EBX, EDX
 		//7.2
 		PUSH EAX
-		MOV EAX, EBX
+		PUSH EBX
+		POP EAX
 		POP EBX
 		//7.3
 		XCHG EAX, EBX
@@ -70,7 +71,8 @@ int main()
 		MOV DI, DX
 		//8.2
 		PUSH SI
-		MOV SI, DI
+		PUSH DI
+		POP SI
 		POP DI
 		//8.3
 		XCHG SI, DI
