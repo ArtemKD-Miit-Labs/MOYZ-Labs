@@ -14,12 +14,11 @@ string IntToHex(int n)
 }
 
 // 1)
-//	b + c*b - (a/4) = num1
-//	  3  1  4   2
+//	2*b - (a/4) = num1
+//	 1  3   2
 
 // 2)
-//	a*b - 1 = num2
-//	 1  2
+//	a - 1 = num2
 
 // 3)
 // num1/num2 = num3
@@ -34,7 +33,7 @@ int main()
 	int32_t f = 10123456; // 0x9A78C0
 
 	unsigned char Memo[DataSize];
-	for (int i = 0; i++; i < DataSize) {
+	for (int i = 0; i < DataSize; i++) {
 		Memo[i] = NULL;
 	}
 
@@ -44,52 +43,36 @@ int main()
 		LEA EDI, Memo // Храним в регистре EDI адресс первого байта Memo
 
 		// 1)-1
-		MOV EAX, c
-		MUL b
-		MOV DWord Ptr [EDI], EAX // заносим в Memo младшую часть произведения
-		MOV DWord Ptr [EDI + 4], EDX // заносим в Memo старшую часть произведения
+		MOV EAX, b
+		MOV EBX, 2
+		MUL EBX
+		MOV DWord Ptr [EDI], EAX
+		MOV DWord Ptr [EDI + 4], EDX
 
 		// 1)-2
 		MOV EAX, a
 		xor EDX, EDX
 		MOV EBX, 4
 		DIV EBX
-		MOV DWord Ptr [EDI + 8], EAX
+		MOV EBX, EAX
+		MOV ECX, 0
 
 		// 1)-3
-		MOV EAX, b // младшая часть b
-		MOV EDX, 0 // старшая чать b
-		MOV ECX, DWord Ptr [EDI] // младшая часть пунтка 1)-1
-		MOV EBX, DWord Ptr [EDI + 4] // старшая часть пункта 1)-1
-
-		ADD EAX, ECX
-		ADC EDX, EBX		
-
-		// 1)-4
-		MOV ECX, DWord Ptr [EDI + 8] // младшая часть пунтка 1)-2
-		MOV EBX, 0 // старшая часть пунтка 1)-2
-
-		SUB EAX, ECX
-		SBB EDX, EBX
-
+		MOV EAX, DWord Ptr [EDI]
+		MOV EDX, DWord Ptr [EDI + 4]
+		SUB EAX, EBX
+		SBB EDX, ECX
 		MOV DWord Ptr [EDI], EAX
 		MOV DWord Ptr [EDI + 4], EDX
 
-		// 2)-1
+		// 2)
 		MOV EAX, a
-		MUL b // младшая часть EAX, старшая EDX
-
-		// 2)-2
 		SUB EAX, 1
-		SBB EDX, 0
-
 		MOV EBX, EAX
-		MOV ECX, EDX
 
 		// 3)
 		MOV EAX, DWord Ptr [EDI]
 		MOV EDX, DWord Ptr [EDI + 4]
-
 		DIV EBX
 		MOV DWord Ptr [EDI], EAX
 
