@@ -114,26 +114,30 @@ int main()
         POPAD
     }
 
+    int i = 0, j = i + even_counter;
     cout << "Numbers [0 : 127] (count:" << even_counter << "): ";
-    for (int i = 0; i < even_counter; i++) {
+    for (i; i < j; i++) {
         cout << data[i] << " ";
     }
     cout << "\n" << endl;
 
+    int i = 128, j = i + even_counter;
     cout << "Numbers [128 : 255] (count:" << odd_counter << "): ";
-    for (int i = 128; i < odd_counter + 128; i++) {
+    for (i; i < j; i++) {
         cout << data[i] << " ";
     }
     cout << "\n" << endl;
 
+    int i = 256, j = i + even_counter;
     cout << "Numbers [256 : 383] (count:" << more_50000_counter << "): ";
-    for (int i = 256; i < more_50000_counter + 256; i++) {
+    for (i; i < j; i++) {
         cout << data[i] << " ";
     }
     cout << "\n" << endl;
 
+    int i = 384, j = i + even_counter;
     cout << "Numbers [384 : 511] (count:" << less_10000_counter << "): ";
-    for (int i = 384; i < less_10000_counter + 384; i++) {
+    for (i; i < j; i++) {
         cout << data[i] << " ";
     }
     cout << "\n" << endl;
