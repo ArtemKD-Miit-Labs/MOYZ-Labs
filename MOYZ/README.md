@@ -2,5 +2,5 @@
 
 1. [Регистры, данные и команды пересылки данных](https://github.com/ArtemKD/Labs-Miit/tree/master/MOYZ/Lab1 "Лабораторная работа №1") ✅
 2. [Арифметические команды](https://github.com/ArtemKD/Labs-Miit/tree/master/MOYZ/Lab2 "Лабораторная работа №2") ✅
-3. Команды передачи управления ❌
+3. [Команды передачи управления](https://github.com/ArtemKD/Labs-Miit/tree/master/MOYZ/Lab3 "Лабораторная работа №3") ✅
 4. Логические команды и команды манипулирования битами ❌
