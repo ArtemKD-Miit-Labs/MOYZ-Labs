@@ -134,7 +134,7 @@ int main()
 			INC ECX
 			RET
 
-
+		// 3
 		reverse_lower_byte_proc:
 			PUSH ECX
 			MOV AL, Byte Ptr [ESI]
@@ -164,7 +164,7 @@ int main()
 				and BH, DH
 				and BL, DL
 				CALL shift_mask_bits_value
-				or BL, BH
+				or BL, BH // в регистре BL хранится отображенная маска текущей пары битов
 				RET
 
 			shift_mask_bits_value:
