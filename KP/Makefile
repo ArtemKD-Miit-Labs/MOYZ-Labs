@@ -18,6 +18,6 @@ main-gdb.o: main.asm
 	nasm -f elf32 -g -F dwarf -o ${BUILD_DIR}/main-gdb.o main.asm
 
 clean:
-	rm -f ${BUILD_DIR}/main ${BUILD_DIR}/main-gdb ${BUILD_DIR}/*.o ${BUILD_DIR}/main-gdb.o
+	rm -rf ${BUILD_DIR}
 
 	
