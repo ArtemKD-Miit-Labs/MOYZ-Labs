@@ -1,12 +1,12 @@
 section .data
-    A dw -3, 4, -5       ; массив A
-    B dw 2, -6, 7        ; массив B
-    C dw -8, 9, -10      ; массив C
-    X dw 3               ; коэффициент X
-    Y dw 2               ; коэффициент Y
-    sum1 dd 0            ; сумма (|A[i]| * |B[i]|)
-    sum2 dd 0            ; сумма |C[i]|
-    result dd 0          ; итоговый результат
+    A dw -3, 4, -5      ; массив A
+    B dw 2, -6, 7       ; массив B
+    C dw 38000, 9, 3800     ; массив C
+    X dw 3              ; коэффициент X
+    Y dw 2              ; коэффициент Y
+    sum1 dd 0           ; сумма (|A[i]| * |B[i]|)
+    sum2 dd 0           ; сумма |C[i]|
+    result dd 0         ; итоговый результат
     overflow_msg db "Overflow detected!", 0xA, 0
 
 section .bss
@@ -18,15 +18,15 @@ section .text
 _start:
     xor eax, eax
     xor edx, edx
-    mov ecx, 3            ; количество элементов в массивах
-    lea esi, [A]          ; указатель на массив A
-    lea edi, [B]          ; указатель на массив B
-    lea ebx, [C]          ; указатель на массив C
+    mov ecx, 3          ; количество элементов в массивах
+    lea esi, [A]        ; указатель на массив A
+    lea edi, [B]        ; указатель на массив B
+    lea ebx, [C]        ; указатель на массив C
 
 loop_calculation:
     ; Загружаем |A[i]|
     mov ax, [esi]
-    cwd                   ; Расширяем AX в DX:AX
+    cwd                 ; Расширяем AX в DX:AX
     test ax, ax
     jns no_abs_A
     neg ax
@@ -34,7 +34,7 @@ no_abs_A:
 
     ; Загружаем |B[i]|
     mov dx, [edi]
-    cwd                   ; Расширяем DX в DX:AX
+    cwd                 ; Расширяем DX в DX:AX
     test dx, dx
     jns no_abs_B
     neg dx
@@ -42,11 +42,11 @@ no_abs_B:
 
     ; Умножаем |A[i]| * |B[i]|
     imul dx
-    jo overflow           ; Проверка переполнения
+    jo overflow         ; Проверка переполнения
 
     ; Складываем сумму sum1 += |A[i]| * |B[i]|
     add dword [sum1], eax
-    jo overflow           ; Проверка переполнения
+    jo overflow         ; Проверка переполнения
 
     ; Обрабатываем |C[i]|
     mov ax, [ebx]
@@ -58,7 +58,7 @@ no_abs_C:
 
     ; Складываем сумму sum2 += |C[i]|
     add dword [sum2], eax
-    jo overflow           ; Проверка переполнения
+    jo overflow         ; Проверка переполнения
 
     ; Переход к следующему элементу
     add esi, 2
