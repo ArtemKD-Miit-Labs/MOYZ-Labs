@@ -1,7 +1,7 @@
 section .data
     A dw -3, 4, -5      ; массив A
     B dw 2, -6, 7       ; массив B
-    C dw 38000, 9, 3800     ; массив C
+    C dw -8, 9, -10     ; массив C
     X dw 3              ; коэффициент X
     Y dw 2              ; коэффициент Y
     sum1 dd 0           ; сумма (|A[i]| * |B[i]|)
@@ -26,7 +26,6 @@ _start:
 loop_calculation:
     ; Загружаем |A[i]|
     mov ax, [esi]
-    cwd                 ; Расширяем AX в DX:AX
     test ax, ax
     jns no_abs_A
     neg ax
@@ -34,7 +33,6 @@ no_abs_A:
 
     ; Загружаем |B[i]|
     mov dx, [edi]
-    cwd                 ; Расширяем DX в DX:AX
     test dx, dx
     jns no_abs_B
     neg dx
@@ -45,19 +43,18 @@ no_abs_B:
     jo overflow         ; Проверка переполнения
 
     ; Складываем сумму sum1 += |A[i]| * |B[i]|
-    add dword [sum1], eax
+    add [sum1], eax
     jo overflow         ; Проверка переполнения
 
     ; Обрабатываем |C[i]|
     mov ax, [ebx]
-    cwd
     test ax, ax
     jns no_abs_C
     neg ax
 no_abs_C:
 
     ; Складываем сумму sum2 += |C[i]|
-    add dword [sum2], eax
+    add [sum2], eax
     jo overflow         ; Проверка переполнения
 
     ; Переход к следующему элементу
